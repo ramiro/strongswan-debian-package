@@ -1,3 +1,20 @@
+strongswan (5.5.0-2~rm8+1) unstable; urgency=medium
+
+  * Backport to jessie.
+  * Undo -dbg -> ddeb transition:
+    * debian/rules:
+      - migrate debug package to ddeb.
+      - update argument name for dh_strip dbgsym migration
+    * debian/control:
+      - drop strongswan-dbg package.
+      - update debhelper dependency to a version which supports dbgsym
+        migration.
+  * Undo
+    * debian/control:
+      - drop old Conflicts/Breaks/Replaces against versions older than stable.
+
+ -- Ramiro Morales <cramm0@gmail.com>  Tue, 27 Sep 2016 12:40:41 -0300
+
 strongswan (5.5.0-2) unstable; urgency=medium
 
   * debian/rules:

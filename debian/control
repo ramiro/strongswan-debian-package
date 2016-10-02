@@ -10,7 +10,7 @@ Vcs-Browser: http://anonscm.debian.org/gitweb/?p=pkg-swan/strongswan.git;a=summa
 Vcs-Git: git://anonscm.debian.org/pkg-swan/strongswan.git
 Build-Depends: bison,
                bzip2,
-               debhelper (>= 9.20151219),
+               debhelper (>= 9),
                dh-autoreconf,
                dh-systemd (>= 1.5),
                dpkg-dev (>= 1.16.2),
@@ -50,8 +50,9 @@ Description: IPsec VPN solution metapackage
 Package: libstrongswan
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
-Breaks: strongswan-starter (<< 5.3.5-2)
-Replaces: strongswan-starter (<< 5.3.5-2)
+Conflicts: strongswan (<< 4.2.12-1)
+Breaks: strongswan-ikev2 (<< 4.6.4)
+Replaces: strongswan-ikev2 (<< 4.6.4)
 Recommends: libstrongswan-standard-plugins
 Suggests: libstrongswan-extra-plugins
 Description: strongSwan utility and crypto library
@@ -185,6 +186,17 @@ Description: strongSwan charon library (extra plugins)
     ipsec.secrets and other credential sets)
   - xauth-pam (XAuth backend that uses PAM modules to verify passwords)
 
+Package: strongswan-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends: ${misc:Depends}, strongswan, libstrongswan (= ${binary:Version})
+Description: strongSwan library and binaries - debugging symbols
+ The strongSwan VPN suite uses the native IPsec stack in the standard
+ Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
+ .
+ This package provides the symbols needed for debugging of strongSwan.
+
 Package: strongswan-starter
 Architecture: any
 Depends: adduser,
@@ -192,7 +204,7 @@ Depends: adduser,
          ${misc:Depends},
          ${shlibs:Depends}
 Recommends: strongswan-charon
-Conflicts: openswan
+Conflicts: strongswan (<< 4.2.12-1), openswan
 Description: strongSwan daemon starter and configuration file parser
  The strongSwan VPN suite uses the native IPsec stack in the standard
  Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
@@ -207,6 +219,8 @@ Depends: libstrongswan (= ${binary:Version}),
          ${misc:Depends},
          ${shlibs:Depends}
 Suggests: libcharon-extra-plugins
+Breaks: libstrongswan (<= 5.1.1-1)
+Replaces: strongswan-ike, libstrongswan (<= 5.1.1-1)
 Description: strongSwan charon library
  The strongSwan VPN suite uses the native IPsec stack in the standard
  Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
@@ -223,6 +237,8 @@ Depends: iproute2 [linux-any] | iproute [linux-any],
          ${misc:Depends},
          ${shlibs:Depends}
 Provides: ike-server
+Breaks: libstrongswan (<= 5.1.1-1), strongswan-ike (<= 5.1.1-1)
+Replaces: strongswan-ikev1, strongswan-ikev2, libstrongswan (<= 5.1.1-1), strongswan-ike (<= 5.1.1-1)
 Description: strongSwan Internet Key Exchange daemon
  The strongSwan VPN suite uses the native IPsec stack in the standard
  Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
@@ -288,6 +304,8 @@ Architecture: any
 Depends: libstrongswan (= ${binary:Version}),
          ${misc:Depends},
          ${shlibs:Depends}
+Breaks: strongswan-ike (<= 5.1.1-1)
+Replaces: strongswan-ike (<= 5.1.1-1)
 Description: standalone IPsec client
  The strongSwan VPN suite uses the native IPsec stack in the standard
  Linux kernel. It supports both the IKEv1 and IKEv2 protocols.
